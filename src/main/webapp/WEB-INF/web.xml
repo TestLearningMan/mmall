@@ -1,7 +1,75 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID" version="2.5">
 
-<web-app>
   <display-name>Archetype Created Web Application</display-name>
+<!-- 过滤所有 url，转译成UTF-8字符集 -->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+<!--http请求的监听器-->
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+
+  <!--spring容器(applicationContext)的监听器,当web容器(tomcat)启动时，初始化applicationContext-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+
+  <!--一、启动一个WEB项目的时候，WEB容器会去读取它的配置文件web.xml，读取<context-param>结点。-->
+  <!--二、容创建一个ServletContext（servlet上下文），这个 web项目的所有部分都将共享这个上下文。-->
+  <!--三、容器将<context-param>转换为键值对，并交给 servletContext。 因为listener, filter 等在初始化时会用到这些上下文中的信息，所以要先加载。-->
+  <!--四、容器创建<listener>中的类实例，创建监听器。-->
+  <!--五、加载filter和servlet-->
+
+  <!--load- on-startup 元素在web应用启动的时候指定了servlet被加载的顺序，它的值必须是一个整数。-->
+  <!--如果它的值是一个负整数或是这个元素不存在，那么容器会在该servlet被调用的时候，加载这个servlet。如果值是正整数或零，容器在配置的时候就加载并初始化这个servlet，容器必须保证值小的先被加载。如果值相等，容器可以自动选择先加载谁。-->
+  <!--web.xml 的加载顺序是：context-param -> listener -> filter -> servlet。-->
+  <!--tomcat容器启动后，读取web.xml中的context-param, -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      classpath:applicationContext.xml
+    </param-value>
+  </context-param>
+
+  <!-- dispatcher servlet,servlet适配器。拦截所有.do后缀的请求，再根据applicationContext.xml的拦截配置调用对应方法-->
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <!--如果不想用默认的servletname名称，可以通过下面的属性指定配置文件的名称-->
+      <!--<init-param>-->
+           <!--<param-name>contextConfigLocation</param-name>-->
+           <!--<param-value>WEB-INF/XX</param-value>-->
+      <!--</init-param>-->
+    <load-on-startup>1</load-on-startup>
+    <!--当load-on-startup 大于等于0时，Tomcat容器在启动时，会通过调用其init()方法初始化这个servlet，即DispatcherServlet，1也代表着高优先级，数字越低，优先级越高-->
+    <!--不指定时，及只有在dispatcher 这个servlet被选择使用时，才会调用DispatcherServlet-->
+  </servlet>
+
+
+
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
 </web-app>
