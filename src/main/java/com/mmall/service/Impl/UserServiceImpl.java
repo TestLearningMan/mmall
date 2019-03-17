@@ -1,4 +1,4 @@
-package com.mmall.service.impl;
+package com.mmall.service.Impl;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
@@ -136,7 +136,13 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("修改密码失败");
     }
 
-
+    /**
+     *
+     * @param passwordOld
+     * @param passwordNew
+     * @param user
+     * @return
+     */
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew,User user){
         //防止横向越权,要校验一下这个用户的旧密码,一定要指定是这个用户.因为我们会查询一个count(1),如果不指定id,那么结果就是true啦count>0;
         int resultCount = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld),user.getId());
@@ -152,7 +158,10 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("密码更新失败");
     }
 
-
+    /**
+     * @param user
+     * @return
+     */
     public ServerResponse<User> updateInformation(User user){
         //username是不能被更新的
         //email也要进行一个校验,校验新的email是不是已经存在,并且存在的email如果相同的话,不能是我们当前的这个用户的.
@@ -175,7 +184,10 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-
+    /**
+     * @param userId
+     * @return
+     */
     public ServerResponse<User> getInformation(Integer userId){
         User user = userMapper.selectByPrimaryKey(userId);
         if(user == null){
@@ -187,8 +199,6 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-
-
     //backend
 
     /**
@@ -196,12 +206,14 @@ public class UserServiceImpl implements IUserService {
      * @param user
      * @return
      */
-    public ServerResponse checkAdminRole(User user){
-        if(user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN){
+    public ServerResponse<String> checkAdminRole(User user){
+        if (user!=null &&user.getRole().equals(Const.Role.ROLE_ADMIN)){
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
     }
+
+
 
 
 
