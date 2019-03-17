@@ -1,4 +1,4 @@
-package com.mmall.service.Impl;
+package com.mmall.service.impl;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;

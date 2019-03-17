@@ -1,4 +1,5 @@
-package com.mmall.service.mpl;
+package com.mmall.service.impl;
+//包名所有字母必须小写，否则启动服务器会找不到类  ClassNotFound
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -91,10 +92,14 @@ public class CategoryServiceImpl implements ICategoryService {
     //递归算法,算出子节点
     private Set<Category> findChildCategory(Set<Category> categorySet ,Integer categoryId){
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
+        //用Set集合剔除重复子节点。因为Set中的元素是对象。equals方法会根据对象的各个属性进行判断
+        //所以此处重写了hashcode和equals方法。改为equals方法只根据id判断两个节点是否相等
+        //注：Set<>集合剔除重复节点，调用的是元素对象的equals方法
         if(category != null){
             categorySet.add(category);
         }
         //查找子节点,递归算法一定要有一个退出的条件
+        //mybatis返回List时，如果查询结果为空，不会返回空对象List，所以不用做校验
         List<Category> categoryList = categoryMapper.selectChildrenParallelCategoryByParentId(categoryId);
         for(Category categoryItem : categoryList){
             findChildCategory(categorySet,categoryItem.getId());

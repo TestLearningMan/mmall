@@ -15,9 +15,9 @@
   <sql id="Base_Column_List" >
     id, parent_id, name, status, sort_order, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultType="int" parameterType="java.lang.Integer" >
-    select 
-    id
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List"/>
     from mmall_category
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -117,9 +117,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--Interge会自动转换成int,mybatis查询时，自动将结果封装成List-->
-  <select id="selectChildrenParallelCategoryByParentId" resultType="int" parameterType="int">
+  <select id="selectChildrenParallelCategoryByParentId" resultMap="BaseResultMap" parameterType="int">
   select
-  id
+  <include refid="Base_Column_List"/>
   from mmall_category
   where parent_id=#{parentId}
   </select>
