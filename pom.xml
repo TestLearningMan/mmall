@@ -34,6 +34,7 @@
 
   <dependencies>
 
+
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-servlet-api</artifactId>
@@ -284,6 +285,9 @@
       </plugin>
 
 
+      <!--maven的核心插件之一complier,默认只支持编译java 1.4,因此需要加上 支持高版本-->
+      <!--会将非maven下载的指定路径的jar包在编译时，一起部署到服务器上存放jar的目录下-->
+      <!--这样就避免了因为自己导入的包未部署而导致了classNotFound异常-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

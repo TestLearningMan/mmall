@@ -31,7 +31,8 @@
     delete from mmall_shipping
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.mmall.pojo.Shipping" >
+  <!--useGeneratedKeys为TRUE时，数据库会返回自动生成的主键，keyProperty 是返回给参数对象的指定属性-->
+  <insert id="insert" parameterType="com.mmall.pojo.Shipping" useGeneratedKeys="true" keyProperty="id" >
     insert into mmall_shipping (id, user_id, receiver_name, 
       receiver_phone, receiver_mobile, receiver_province, 
       receiver_city, receiver_district, receiver_address, 
@@ -43,7 +44,8 @@
       #{receiverZip,jdbcType=VARCHAR}, now(), now()
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mmall.pojo.Shipping" >
+
+  <insert id="insertSelective" parameterType="com.mmall.pojo.Shipping"  >
     insert into mmall_shipping
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -176,4 +178,47 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <delete id="deleteByShippingIdUserId" parameterType="map" >
+      delete from mmall_shipping
+      where user_id = #{userId}
+      and id = #{shippingId}
+  </delete>
+
+  <!--传的是Shipping对象，读的都是Shipping对象的属性。和SpringMVC数据绑定类似-->
+  <!--可以直接把Shipping 类作为parameterType-->
+  <!--UserId不可更改-->
+  <update id="updateByShipping" parameterType="com.mmall.pojo.Shipping" >
+    update mmall_shipping
+    set
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      receiver_city = #{receiverCity,jdbcType=VARCHAR},
+      receiver_district = #{receiverDistrict,jdbcType=VARCHAR},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      receiver_zip = #{receiverZip,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
+    where id = #{id,jdbcType=INTEGER}
+    and user_id=#{userId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByShippingIdUserId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_shipping
+    where id = #{id,jdbcType=INTEGER}
+    and user_id=#{userId,jdbcType=INTEGER}
+  </select>
+
+  <!--一个参数的时候，也可以用map-->
+  <select id="selectByUserId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from mmall_shipping
+    where user_id=#{userId}
+  </select>
+
 </mapper>

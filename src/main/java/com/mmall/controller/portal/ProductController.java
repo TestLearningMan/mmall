@@ -26,7 +26,7 @@ public class ProductController {
 
     @RequestMapping(value = "list.do",method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<PageInfo> List(@RequestParam(value="keyword" ,required=false) String keyword,
+    public ServerResponse<PageInfo> list(@RequestParam(value="keyword" ,required=false) String keyword,
                                          @RequestParam(value="categoryId",required = false) Integer categoryId,
                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,

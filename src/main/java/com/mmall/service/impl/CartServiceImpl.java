@@ -97,6 +97,11 @@ public class CartServiceImpl implements ICartService {
         return this.list(userId);
     }
 
+    /**
+     * 获取购物车商品数量
+     * @param userId
+     * @return
+     */
     public ServerResponse<Integer> getCartProductCount(Integer userId){
         //controller判断了user，但是userId也有可能是null
         if (userId == null){

@@ -31,4 +31,8 @@ public class productTest {
         Cart cart=null;
         cartMapper.updateByPrimaryKeySelective(cart);
     }
+
+    public static void main(String[] args) {
+
+    }
 }
