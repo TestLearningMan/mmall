@@ -46,10 +46,72 @@ public class Const {
         private ProductStatusEnum(int code, String value){
         this.code=code;
         this.value = value;
+        }
+    }
+    public enum OrderStatusEnum{
+        CANCELED(0,"已取消"),
+        NO_PAY(10,"未支付"),
+        PAIED(20,"已付款"),
+        SHIPPED(40,"已发货"),
+        SUCCESS(50,"交易已完成"),
+        CLOSED(60,"订单关闭");
 
+        int code;
+        String value;
+        OrderStatusEnum(int code,String value){
+            this.code=code;
+            this.value=value;
+        }
+        public void setCode(int code) {
+            this.code = code;
+        }
+        public void setValue(String value) {
+            this.value = value;
         }
 
+        public int getCode() {
+            return code;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
+    public interface AlipayCallBack{
+        String TRADE_STATUS_WAIT_BUYER_PAY="WAIT_BUYER_TRADE";
+        String TRADE_STATUS_TRADE_SUCCESS="TRADE_SUCCESS";
+
+        String RESPONSE_SUCCESS="success";
+        String RESPONSE_FAILED="failed";
     }
+
+    public enum PayPlatform{
+        ALIPAY(1,"支付宝");
+
+        int code;
+        String value;
+        PayPlatform(int code,String value){
+            this.code=code;
+            this.value=value;
+        }
+        public void setCode(int code) {
+            this.code = code;
+        }
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+
+    }
+
 
