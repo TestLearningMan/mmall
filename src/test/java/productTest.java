@@ -32,7 +32,10 @@ public class productTest {
         cartMapper.updateByPrimaryKeySelective(cart);
     }
 
-    public static void main(String[] args) {
-
+    @Test
+    public void CurrenTime(){
+        long currenTime = System.currentTimeMillis();
+        System.out.println(currenTime+currenTime%9);
+        System.out.println(currenTime+currenTime%9);
     }
 }
